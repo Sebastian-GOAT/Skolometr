@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+:root {
+    --bg: white;
+    --text: black;
+    --main: #456eff;
+    --accent: #7b61ff;
+    --scrollbar: #f1f1f1;
+
+    --bg-school-card: rgb(229, 229, 229);
+
+    --bg-theme-toggle: rgb(199, 199, 199);
+}
+
+.dark {
+    --bg: rgb(9, 9, 16);
+    --text: white;
+    --main: #456eff;
+    --accent: #7b61ff;
+    --scrollbar: #f1f1f1;
+
+    --bg-school-card: rgb(23, 23, 28);
+
+    --bg-theme-toggle: rgb(47, 47, 47);
+}
+
+body {
+    padding-top: 60px;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
