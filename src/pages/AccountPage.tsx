@@ -90,7 +90,10 @@ export default function AccountPage() {
                         Authorization: `Client-ID ${import.meta.env.IMGUR_CLIENT_ID}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ image: base64, type: 'base64' })
+                    body: JSON.stringify({
+                        image: base64,
+                        type: 'image/png'
+                    })
                 };
 
                 const res = await fetch('https://api.imgur.com/3/image', options);
