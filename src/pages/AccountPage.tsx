@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { useUser } from '../contexts/UserContext.tsx';
-import type { RatingType } from '../types/RatingType.ts';
+import { type RatingType } from '../types/RatingType.ts';
+import { type RequestOptionsType } from '../types/RequestType.ts';
 import { sendPasswordResetEmail, signOut } from "firebase/auth";
 import { auth } from '../../firebase.ts';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.ts';
 import { Navigate } from 'react-router-dom';
 import Nav from '../components/Nav.tsx';
@@ -11,6 +12,8 @@ import Comment from '../components/Comment.tsx';
 import defaultImage from '../assets/defaultImage.png';
 
 export default function AccountPage() {
+
+    const imageInputRef = useRef<HTMLInputElement | null>(null);
 
     const { user, loading: isUserLoading } = useUser();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -64,6 +67,56 @@ export default function AccountPage() {
         logout();
     }
 
+    async function handleProfilePictureChange(e: ChangeEvent<HTMLInputElement>) {
+        function fileToDataURL(file: File): Promise<string> {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsDataURL(file);
+            });
+        }
+        async function getURLFromImgur() {
+            try {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                const dataURL = await fileToDataURL(file);
+                const base64 = dataURL.split(',')[1];
+
+                const options: RequestOptionsType<'POST'> = {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Client-ID ${import.meta.env.IMGUR_CLIENT_ID}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image: base64, type: 'base64' })
+                };
+
+                const res = await fetch('https://api.imgur.com/3/image', options);
+                if (!res.ok) throw new Error('Failed to get the image url.');
+
+                const data = await res.json();
+                return data.data.link;
+            } catch(err) {
+                console.error(err);
+            }
+        }
+        async function changeProfilePicture() {
+            try {
+                const imgUrl = await getURLFromImgur();
+                if (!imgUrl || !user?.uid) return;
+
+                const userDocRef = doc(db, "users", user.uid);
+
+                await updateDoc(userDocRef, { photoURL: imgUrl });
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        changeProfilePicture();
+    }
+
     if (isUserLoading) return (
         <>
             <Nav />
@@ -86,10 +139,17 @@ export default function AccountPage() {
                     <div className='py-16 w-full lg:w-[350px] flex justify-center'>
                         {/* Account details */}
                         <div className='p-8 w-[275px] h-fit gap-8 bg-[var(--bg-theme-toggle)] flex flex-col items-center rounded-2xl'>
+                            <input
+                                type='file'
+                                ref={imageInputRef}
+                                onChange={handleProfilePictureChange}
+                                hidden
+                            />
                             <img
                                 src={user.photoURL || defaultImage}
                                 alt='pfp'
-                                className='block aspect-square w-36 border-3 rounded-full'
+                                className='block aspect-square w-36 border-3 rounded-full cursor-pointer'
+                                onClick={() => imageInputRef.current?.click()}
                             />
                             <h1 className='text-[1.2rem] font-bold'>
                                 {truncateEmail(user.email as string, 20)}
