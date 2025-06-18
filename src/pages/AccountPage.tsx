@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { useUser } from '../contexts/UserContext.tsx';
 import { type RatingType } from '../types/RatingType.ts';
-import { type RequestOptionsType } from '../types/RequestType.ts';
+import { type RequestOptionsType } from '../types/RequestOptionsType.ts';
 import { sendPasswordResetEmail, signOut } from "firebase/auth";
 import { auth } from '../../firebase.ts';
 import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
