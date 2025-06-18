@@ -10,6 +10,10 @@
 2. Neponižuj a nepoužívej hrubou řeč.
 3. Neodpovídej ostatním
 
+## Přispívání
+
+Pokud mi chceš pomoct v rozšiřování, podívej se na *CONTRUBUTING.md*
+
 ## Kontakt
 
 Pokud máš jakýkoliv dotaz nebo někdo řádí v komentářích, dej mi vědět na:
