@@ -87,7 +87,7 @@ export default function AccountPage() {
                 const options: RequestOptionsType<'POST'> = {
                     method: 'POST',
                     headers: {
-                        Authorization: `Client-ID ${import.meta.env.IMGUR_CLIENT_ID}`,
+                        Authorization: `Client-ID ${import.meta.env.VITE_IMGUR_CLIENT_ID}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
