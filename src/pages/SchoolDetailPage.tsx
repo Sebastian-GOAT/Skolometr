@@ -49,7 +49,8 @@ export default function SchoolDetailPage() {
         }
         async function getComments(): Promise<any> {
             try {
-                const querySnapshot = await getDocs(collection(db, 'ratings'));
+                const q = query(collection(db, 'ratings'), where('school', '==', schoolName));
+                const querySnapshot = await getDocs(q);
 
                 if (querySnapshot.empty) return;
 
@@ -102,7 +103,7 @@ export default function SchoolDetailPage() {
                                     <div>
                                         <h2 className='max-w-[350px] text-[1.3rem] gap-2 font-medium flex items-center'>
                                             <FaLocationDot />
-                                            <span className='opacity-60'>
+                                            <span className='opacity-60 text-center'>
                                                 {school.adress}
                                             </span>
                                         </h2>
