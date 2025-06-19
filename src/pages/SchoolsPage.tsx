@@ -17,6 +17,7 @@ export default function SchoolsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        document.title = 'Školy | Školometr';
         async function getSchools(): Promise<void> {
             try {
                 const querySnapshot = await getDocs(collection(db, 'schools'));

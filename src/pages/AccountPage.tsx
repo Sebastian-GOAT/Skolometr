@@ -20,6 +20,10 @@ export default function AccountPage() {
     const [comments, setComments] = useState<RatingType[]>([]);
 
     useEffect(() => {
+        document.title = 'Profil | Školometr';
+    }, []);
+
+    useEffect(() => {
         async function getUsersComments(): Promise<void> {
             try {
                 if (!user) return;

@@ -25,6 +25,10 @@ export default function SchoolDetailPage() {
     const [images, setImages] = useState<string[] | null>(null);
 
     useEffect(() => {
+        document.title = ` ${schoolName}| Školometr`;
+    }, []);
+
+    useEffect(() => {
         async function getSchool(): Promise<SchoolTypeWithId | void> {
             try {
                 const q = query(collection(db, 'schools'), where('title', '==', schoolName));
