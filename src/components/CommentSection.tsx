@@ -127,15 +127,23 @@ export default function CommentSection({ schoolName, schoolId, comments }: { sch
                 </form>
             </div>
             {/* Comments */}
-            <div className='w-full flex flex-col gap-4'>
+            <div className='w-full gap-4 flex flex-col'>
                 {
-                    comments.map((comment, i) => (
-                        <Comment
-                            key={i}
-                            comment={comment}
-                            i={i}
-                        />
-                    ))
+                    comments.length === 0 ? (
+                        <div className='px-8 pt-4 w-full flex justify-center items-center'>
+                            <h1 className='text-[1.3rem] text-center'>
+                                Zatím žádné komentáře!
+                            </h1>
+                        </div>
+                    ) : (
+                        comments.map((comment, i) => (
+                            <Comment
+                                key={i}
+                                comment={comment}
+                                i={i}
+                            />
+                        ))
+                    )
                 }
             </div>
         </div>
